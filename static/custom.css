@@ -1,3 +1,6 @@
-#search {
-  width: 400px;
+#side-bar {
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: grey;
+  height: 1000px;
 }

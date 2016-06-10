@@ -6,6 +6,20 @@ const EventEmitter = require('events');
 const model = new MovieModel();
 const emitter = new EventEmitter();
 
+function movieBox(props) {
+  return (
+    <div className='card'>
+      <div className='card-image'>
+        <img src={ props.Poster }></img>
+      </div>
+      <div className='card-content'>
+        <span className='card-title'>{ props.Title }</span>
+        <p className='card-text'>{ props.Plot }</p>
+      </div>
+    </div>
+  );
+}
+
 class App extends React.Component {
   render() {
     return (
@@ -19,11 +33,10 @@ class App extends React.Component {
 class MovieSearch extends React.Component {
   constructor() {
     super();
+    this.state = { movie: { Title: 'Search movie', Plot: 'Above...' } };
     this.listenSearch((search) => {
-      let content;
       model.findMovie(search, (body) => {
-        content = body;
-        console.log(content);
+        this.setState({ movie: body });
       });
     });
   }
@@ -36,12 +49,19 @@ class MovieSearch extends React.Component {
   }
 
   listenSearch(callback) {
-    emitter.on('search', callback.bind(this));
+    emitter.on('search', callback);
   }
 
   render() {
     return (
-      <input id='search' placeholder='Search...' onKeyUp={this.pressSearch} />
+      <div>
+        <div className='row'>
+          <div className='col m4' id='side-bar'>
+            <input id='search' placeholder='Search...' onKeyUp={this.pressSearch} />
+            { movieBox(this.state.movie) }
+          </div>
+        </div>
+      </div>
     );
   }
 }

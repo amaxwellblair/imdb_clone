@@ -9,10 +9,13 @@ class MovieApi {
     return this.rootUrl.concat(path);
   }
 
-  getSearch(query, success) {
+  getSearch(query, callback) {
     request(this.url('/search?query=').concat(query), (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        success(body);
+      const cleanBody = JSON.parse(body);
+      if (!cleanBody.Error && response.statusCode === 200) {
+        callback(cleanBody);
+      } else {
+        callback({ Title: 'Nothing was found', Plot: '...' });
       }
     });
   }

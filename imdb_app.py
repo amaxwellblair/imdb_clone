@@ -1,8 +1,11 @@
 from flask import Flask, jsonify, request, render_template
+from services.imdb_api import *
 import redis
 import json
+
 app = Flask(__name__)
 r = redis.StrictRedis(host='localhost', port='6379', db=0)
+api = MovieApi()
 
 
 @app.route('/', methods=['GET'])
@@ -22,8 +25,15 @@ def get_movies():
 def post_movie():
     movie = {
         'title': request.json['title'],
-        'description': request.json.get('description', ""),
+        'description': request.json.get('description', ''),
         'genre': request.json['genre']
     }
     r.set(movie['title'], movie)
     return jsonify({'movie': movie})
+
+
+@app.route('/search', methods=['GET'])
+def search_imdb():
+    substring = request.args.get('query', '')
+    content = api.get_movie_search(substring)
+    return content

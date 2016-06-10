@@ -1,10 +1,11 @@
 module.exports = {
-  entry: ['babel-polyfill', './index.js'],
+  entry: ['babel-polyfill', './lib/index.js'],
   output: {
     path: '../static',
     filename: 'bundle.js',
   },
   module: {
+    noParse: /node_modules\/json-schema\/lib\/validate\.js/,
     loaders: [
       {
         test: /\.jsx?/,
@@ -15,6 +16,13 @@ module.exports = {
         },
       },
       { test: /\.css$/, loader: 'style!css' },
+      { test: /\.json$/, loader: 'json-loader' },
     ],
+  },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
   },
 };

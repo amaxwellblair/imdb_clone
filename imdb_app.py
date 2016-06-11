@@ -17,18 +17,22 @@ def get_root():
 def get_movies():
     movies = []
     for key in r.scan_iter():
-        movies.append(r.get(key))
-    return jsonify({'movies': movies})
+        movie = r.get(key)
+        movies.append(json.loads(movie))
+    return jsonify(movies)
 
 
 @app.route('/api/v1/movie', methods=['POST'])
 def post_movie():
+    print request.json.get('Title', '')
     movie = {
-        'title': request.json['title'],
-        'description': request.json.get('description', ''),
-        'genre': request.json['genre']
+        'Title': request.json['Title'],
+        'Plot': request.json.get('Plot', ''),
+        'imdbRating': request.json['imdbRating'],
+        'Poster': request.json.get('Poster', ''),
+        'imdbID': request.json['imdbID'],
     }
-    r.set(movie['title'], movie)
+    r.set(movie['imdbID'], json.dumps(movie))
     return jsonify({'movie': movie})
 
 

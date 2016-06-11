@@ -4,3 +4,25 @@
   border-right-color: grey;
   height: 1000px;
 }
+
+.store-movie {
+  width: 30%;
+  height: 500px;
+  padding: 20px 10px 10px 10px;
+  margin: 10px;
+  position: relative;
+  float: left;
+  overflow-y: auto;
+}
+
+.close {
+  color: black;
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  z-index: 100;
+}
+
+.close:hover {
+  color: grey;
+}

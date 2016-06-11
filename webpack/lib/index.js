@@ -9,6 +9,7 @@ const emitter = new EventEmitter();
 function saveButton(props) {
   const handleClick = () => {
     emitter.emit('save', props);
+    model.createMovie(props);
   };
 
   if (props.Poster) {
@@ -78,6 +79,14 @@ class MovieStore extends React.Component {
   constructor() {
     super();
     this.state = { movies: [] };
+    model.allMovies((rawMovies) => {
+      const movies = [];
+      for (let i = 0; i < rawMovies.length; i++) {
+        console.log(rawMovies[i]);
+        movies.push(movieBox(rawMovies[i]));
+      }
+      this.setState({ movies });
+    });
     this.saveListener((props) => {
       const movies = this.state.movies;
       movies.push(movieBox(props));

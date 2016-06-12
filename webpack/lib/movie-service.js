@@ -32,6 +32,16 @@ class MovieApi {
     });
   }
 
+  deleteMovie(movie) {
+    request({
+      url: this.url('/api/v1/movie/').concat(movie.imdbID),
+      method: 'POST',
+      headers: {
+        X_HTTP_METHOD_OVERRIDE: 'DELETE',
+      },
+    });
+  }
+
   getMovies(callback) {
     request(this.url('/api/v1/movies'), (error, response, body) => {
       const movies = [];

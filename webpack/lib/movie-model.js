@@ -16,6 +16,10 @@ class Movie {
   allMovies(callback) {
     return this.movieApi.getMovies(callback);
   }
+
+  deleteMovie(movie) {
+    return this.movieApi.deleteMovie(movie);
+  }
 }
 
 module.exports = Movie;

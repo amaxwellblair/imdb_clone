@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request, render_template
 from services.imdb_api import *
+from middleware.http_override import HTTPMethodOverrideMiddleware
 import redis
 import json
 
 app = Flask(__name__)
+app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
 r = redis.StrictRedis(host='localhost', port='6379', db=0)
 api = MovieApi()
 
@@ -24,7 +26,6 @@ def get_movies():
 
 @app.route('/api/v1/movie', methods=['POST'])
 def post_movie():
-    print request.json.get('Title', '')
     movie = {
         'Title': request.json['Title'],
         'Plot': request.json.get('Plot', ''),
@@ -34,6 +35,13 @@ def post_movie():
     }
     r.set(movie['imdbID'], json.dumps(movie))
     return jsonify({'movie': movie})
+
+
+@app.route('/api/v1/movie/<id>', methods=['DELETE'])
+def delete_movie(id):
+    print 'Hell on earth'
+    r.delete(id)
+    return ''
 
 
 @app.route('/search', methods=['GET'])

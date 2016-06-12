@@ -25,6 +25,7 @@ function saveButton(props) {
 function deleteButton(props) {
   const handleClick = () => {
     emitter.emit('delete', props);
+    model.deleteMovie(props);
   };
 
   return (
@@ -82,7 +83,6 @@ class MovieStore extends React.Component {
     model.allMovies((rawMovies) => {
       const movies = [];
       for (let i = 0; i < rawMovies.length; i++) {
-        console.log(rawMovies[i]);
         movies.push(movieBox(rawMovies[i]));
       }
       this.setState({ movies });
